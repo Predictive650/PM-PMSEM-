@@ -102,7 +102,7 @@
                         Formulir pemeriksaan pemeliharaan dan analisis keselamatan kerja.
                     </p>
                 </div>
-==============
+
                 <div class="flex flex-wrap items-center gap-2 sm:gap-3">
                     <button onclick="window.print()" class="flex-1 sm:flex-none px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg text-xs sm:text-sm transition-all shadow-sm">
                         Download PDF / Cetak
@@ -112,7 +112,7 @@
                     </button>
                 </div>
             </div>
-	=========	                
+                
                 <!-- SECTION INSPEKSI TEKNIS -->
                 <div class="space-y-4">
                     <div class="bg-slate-900 text-white p-4 rounded-lg">
@@ -333,6 +333,23 @@
                focus:border-blue-500"
       />
     </div>
+	
+	  <!-- Jenis PM & HM -->
+    <div class="grid grid-cols-[95px_10px_minmax(0,1fr)] md:grid-cols-[110px_10px_auto] gap-x-2 items-center">
+      <span class="text-gray-300">Jenis PM & HM</span>
+      <span class="text-gray-400">:</span>
+
+      <input
+        type="text"
+        name="Jenis_PM & HM"
+        placeholder="Jenis PM & HM"
+        class="w-full md:w-64 bg-blue-900/70 border border-blue-700
+               rounded-lg px-3 py-2 text-sm text-white
+               placeholder-gray-400
+               focus:outline-none focus:ring-2 focus:ring-blue-500
+               focus:border-blue-500"
+      />
+    </div>
 
     <!-- Nama Mekanik -->
     <div class="grid grid-cols-[95px_10px_minmax(0,1fr)] md:grid-cols-[110px_10px_auto] gap-x-2 items-center">
@@ -480,7 +497,6 @@
   // Update setiap 1 menit
   setInterval(updateWaktuPekerjaan, 60000);
 </script>
-======
 
     <!-- TAILWIND CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -1283,29 +1299,26 @@
                  HEADER TABLE
             ========================================== -->
 
-            <thead>
-
-                <tr
-                    class="
-                        bg-black
-                        text-black
-                    ">
-
-
-                    <!-- NO -->
+           <!-- NO -->
 
                     <th
                         class="
                             w-[5%]
-                            text-black
+                            text-center
                             border-r
                             border-blue-800
                         ">
 
                         No
-
-                    </th>
-
+						<th
+    class="
+        w-[5%]
+        text-center
+        border-r
+        border-blue-800
+    ">
+    Check
+</th>
 
                     <!-- KOMPONEN -->
 
@@ -1335,7 +1348,8 @@
                         Part Number
 
                     </th>
-
+					
+					
 
                     <!-- QTY -->
 
@@ -1427,7 +1441,85 @@
                 </tr>
 
             </thead>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
+    const table = document.querySelector("#tableContainer table");
+    const tbody = document.querySelector("#tableBody");
+
+    if (!table || !tbody) return;
+
+    // ==========================================
+    // TAMBAHKAN HEADER CHECK
+    // ==========================================
+
+    const headerRow = table.querySelector("thead tr");
+
+    if (headerRow && !headerRow.querySelector(".check-header")) {
+
+        const checkHeader = document.createElement("th");
+
+        checkHeader.className =
+            "check-header w-[5%] text-center border-r border-blue-800";
+
+        checkHeader.innerHTML = "✓";
+
+        // Masukkan setelah kolom NO
+        headerRow.insertBefore(checkHeader, headerRow.children[1]);
+    }
+
+
+    // ==========================================
+    // FUNGSI TAMBAH CHECKBOX
+    // ==========================================
+
+    function addCheckbox() {
+
+        const rows = tbody.querySelectorAll("tr");
+
+        rows.forEach(function (row) {
+
+            // Jangan tambahkan dua kali
+            if (row.querySelector(".part-check")) return;
+
+            const checkCell = document.createElement("td");
+
+            checkCell.className =
+                "text-center border-r border-blue-800";
+
+            checkCell.innerHTML = `
+                <input
+                    type="checkbox"
+                    class="part-check w-4 h-4 cursor-pointer accent-green-600"
+                >
+            `;
+
+            // Masukkan setelah kolom NO
+            row.insertBefore(checkCell, row.children[1]);
+
+        });
+    }
+
+
+    // Jalankan pertama kali
+    addCheckbox();
+
+
+    // ==========================================
+    // AWASI JIKA DATA PART BERUBAH / MUNCUL
+    // ==========================================
+
+    const observer = new MutationObserver(function () {
+        addCheckbox();
+    });
+
+    observer.observe(tbody, {
+        childList: true,
+        subtree: true
+    });
+
+});
+</script>
 
 
             <!-- =========================================
@@ -5757,6 +5849,61 @@ renderData();
 </html>
 
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    padding: 15px;
+    background: #f1f5f9;
+    font-family: Arial, sans-serif;
+}
+
+.backlog {
+    background: #061b3a;
+    color: white;
+    padding: 12px 15px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 8px 8px 0 0;
+}
+
+textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 15px;
+    box-sizing: border-box;
+    border: 2px solid #061b3a;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    font-size: 16px;
+    resize: vertical;
+    outline: none;
+    background: #061b3a;
+}
+
+textarea:focus {
+    border-color: #0b3b78;
+}
+</style>
+</head>
+
+<body>
+
+<div class="backlog">
+    BACKLOG
+</div>
+
+<textarea placeholder="Ketik backlog di sini..."></textarea>
+
+</body>
+</html>
+
+
                 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -6177,7 +6324,7 @@ renderData();
             const pass = document.getElementById("password").value;
             const errorMsg = document.getElementById("errorMessage");
 
-            if (user === "admin" && pass === "PMSEM2") {
+            if (user === "mekanik123" && pass === "PMSEM2") {
                 errorMsg.classList.add("hidden");
                 document.getElementById("loginScreen").classList.add("hidden");
                 document.getElementById("appScreen").classList.remove("hidden");
@@ -6310,67 +6457,619 @@ renderData();
     </script>
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikasi Kamera Dokumentasi</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background: #f0f2f5; }
-        video, canvas { width: 100%; max-width: 400px; border-radius: 10px; margin-top: 10px; }
-        button { padding: 12px 20px; font-size: 16px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; }
-        button:hover { background: #0056b3; }
-    </style>
-</head>
-<body>
 
-    <h2>Kamera Dokumentasi</h2>
-    
-    <!-- Tampilan Kamera -->
-    <video id="video" autoplay playsinline></video>
-    <br>
-    <button id="capture-btn">Ambil Foto</button>
+<!-- ================================
+     KAMERA DOKUMENTASI
+================================ -->
 
-    <!-- Hasil Foto -->
-    <h3>Hasil Dokumentasi:</h3>
-    <canvas id="canvas" style="display:none;"></canvas>
-    <img id="photo" alt="Hasil foto akan muncul di sini" style="display:none;">
+<div class="w-full max-w-2xl mx-auto px-2 sm:px-4">
 
-    <script>
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const photo = document.getElementById('photo');
-        const captureBtn = document.getElementById('capture-btn');
+  <h2 class="text-base sm:text-lg font-bold text-black mb-2">
+    Kamera Dokumentasi
+  </h2>
 
-        // Mengaktifkan kamera HP
-        async function initCamera() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: 'environment' } // 'environment' untuk kamera belakang
-                });
-                video.srcObject = stream;
-            } catch (err) {
-                alert("Gagal mengakses kamera: " + err);
+  <!-- Counter -->
+  <div class="text-xs sm:text-sm text-black mb-2">
+    Foto:
+    <span id="photoCount" class="font-bold">0</span>
+    / 8
+  </div>
+
+  <!-- ================================
+       KAMERA
+  ================================= -->
+
+  <div class="w-full overflow-hidden rounded-lg bg-black">
+    <video
+      id="video"
+      autoplay
+      playsinline
+      class="block w-full h-auto max-h-[55vh] object-cover"
+    ></video>
+  </div>
+
+
+  <!-- ================================
+       TOMBOL
+  ================================= -->
+
+  <div class="grid grid-cols-2 gap-2 mt-2">
+
+    <button
+      type="button"
+      id="captureBtn"
+      class="w-full bg-[#003b5c] text-white
+             text-xs sm:text-sm
+             font-semibold
+             py-2.5 sm:py-3
+             px-2
+             rounded-lg
+             active:scale-95
+             transition"
+    >
+      📷 Ambil Foto
+    </button>
+
+    <button
+      type="button"
+      id="galleryBtn"
+      class="w-full bg-gray-300 text-black
+             text-xs sm:text-sm
+             font-semibold
+             py-2.5 sm:py-3
+             px-2
+             rounded-lg
+             active:scale-95
+             transition"
+    >
+      🖼️ Dari Galeri
+    </button>
+
+  </div>
+
+
+  <!-- Input Galeri -->
+  <input
+    type="file"
+    id="galleryInput"
+    accept="image/*"
+    multiple
+    class="hidden"
+  >
+
+
+  <!-- ================================
+       HASIL FOTO
+  ================================= -->
+
+  <h3 class="text-sm sm:text-base font-bold text-black mt-4 mb-2">
+    Hasil Dokumentasi
+  </h3>
+
+
+  <!--
+      2 kolom di HP
+      3 kolom di tablet/laptop
+  -->
+
+  <div
+    id="photoContainer"
+    class="grid grid-cols-2 sm:grid-cols-3 gap-2 w-full"
+  ></div>
+
+
+  <!-- ================================
+       HAPUS SEMUA
+  ================================= -->
+
+  <button
+    type="button"
+    id="deleteAllBtn"
+    class="hidden w-full
+           bg-red-600 text-white
+           text-xs sm:text-sm
+           font-semibold
+           py-2.5
+           rounded-lg
+           mt-3"
+  >
+    🗑️ Hapus Semua Foto
+  </button>
+
+
+  <!-- Canvas -->
+  <canvas id="canvas" class="hidden"></canvas>
+
+</div>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const video = document.getElementById("video");
+  const canvas = document.getElementById("canvas");
+
+  const captureBtn =
+    document.getElementById("captureBtn");
+
+  const galleryBtn =
+    document.getElementById("galleryBtn");
+
+  const galleryInput =
+    document.getElementById("galleryInput");
+
+  const photoContainer =
+    document.getElementById("photoContainer");
+
+  const photoCount =
+    document.getElementById("photoCount");
+
+  const deleteAllBtn =
+    document.getElementById("deleteAllBtn");
+
+
+  /* ====================================
+     MAKSIMAL FOTO
+  ==================================== */
+
+  const MAX_PHOTO = 8;
+
+  let photos = [];
+
+  let cameraStream = null;
+
+
+  /* ====================================
+     AKTIFKAN KAMERA
+  ==================================== */
+
+  async function startCamera() {
+
+    try {
+
+      cameraStream =
+        await navigator.mediaDevices.getUserMedia({
+
+          video: {
+            facingMode: {
+              ideal: "environment"
             }
-        }
+          },
 
-        // Mengambil foto
-        captureBtn.addEventListener('click', () => {
-            const context = canvas.getContext('2d');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            // Konversi ke format gambar
-            const dataUrl = canvas.toDataURL('image/png');
-            photo.setAttribute('src', dataUrl);
-            photo.style.display = 'block';
+          audio: false
+
         });
 
-        // Jalankan kamera saat halaman dibuka
-        initCamera();
-    </script>
+      video.srcObject = cameraStream;
 
-</body>
-</html>
+    }
+
+    catch (error) {
+
+      console.error(error);
+
+      alert(
+        "Kamera tidak dapat dibuka.\n\n" +
+        "Pastikan browser memiliki izin kamera."
+      );
+
+    }
+
+  }
+
+
+  /* ====================================
+     TAMPILKAN FOTO
+  ==================================== */
+
+  function renderPhotos() {
+
+    photoContainer.innerHTML = "";
+
+    photoCount.textContent =
+      photos.length;
+
+
+    /* Tidak ada foto */
+
+    if (photos.length === 0) {
+
+      photoContainer.innerHTML = `
+        <div
+          class="col-span-2 sm:col-span-3
+                 text-center
+                 text-xs sm:text-sm
+                 text-gray-500
+                 py-5"
+        >
+          Belum ada foto dokumentasi
+        </div>
+      `;
+
+    }
+
+
+    /* Tampilkan foto */
+
+    photos.forEach((photo, index) => {
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "relative w-full overflow-hidden rounded-lg bg-gray-200";
+
+
+      item.innerHTML = `
+
+        <img
+          src="${photo}"
+          class="block w-full
+                 aspect-[4/3]
+                 object-cover"
+          alt="Dokumentasi ${index + 1}"
+        >
+
+        <button
+          type="button"
+          data-index="${index}"
+          class="delete-photo
+                 absolute
+                 top-1 right-1
+                 w-7 h-7
+                 sm:w-8 sm:h-8
+                 rounded-full
+                 bg-red-600
+                 text-white
+                 text-sm
+                 font-bold
+                 shadow"
+        >
+          ×
+        </button>
+
+      `;
+
+      photoContainer.appendChild(item);
+
+    });
+
+
+    /* ====================================
+       BATAS 8 FOTO
+    ==================================== */
+
+    if (photos.length >= MAX_PHOTO) {
+
+      captureBtn.disabled = true;
+
+      galleryBtn.disabled = true;
+
+      captureBtn.classList.add(
+        "opacity-50",
+        "cursor-not-allowed"
+      );
+
+      galleryBtn.classList.add(
+        "opacity-50",
+        "cursor-not-allowed"
+      );
+
+    }
+
+    else {
+
+      captureBtn.disabled = false;
+
+      galleryBtn.disabled = false;
+
+      captureBtn.classList.remove(
+        "opacity-50",
+        "cursor-not-allowed"
+      );
+
+      galleryBtn.classList.remove(
+        "opacity-50",
+        "cursor-not-allowed"
+      );
+
+    }
+
+
+    /* Tombol hapus semua */
+
+    if (photos.length > 0) {
+
+      deleteAllBtn.classList.remove(
+        "hidden"
+      );
+
+    }
+
+    else {
+
+      deleteAllBtn.classList.add(
+        "hidden"
+      );
+
+    }
+
+  }
+
+
+  /* ====================================
+     AMBIL FOTO KAMERA
+  ==================================== */
+
+  captureBtn.addEventListener(
+    "click",
+    function () {
+
+      if (photos.length >= MAX_PHOTO) {
+
+        alert(
+          "Maksimal 8 foto."
+        );
+
+        return;
+
+      }
+
+
+      if (
+        !video.videoWidth ||
+        !video.videoHeight
+      ) {
+
+        alert(
+          "Kamera belum siap."
+        );
+
+        return;
+
+      }
+
+
+      canvas.width =
+        video.videoWidth;
+
+      canvas.height =
+        video.videoHeight;
+
+
+      const ctx =
+        canvas.getContext("2d");
+
+
+      ctx.drawImage(
+        video,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+
+
+      const image =
+        canvas.toDataURL(
+          "image/jpeg",
+          0.80
+        );
+
+
+      photos.push(image);
+
+      renderPhotos();
+
+    }
+  );
+
+
+  /* ====================================
+     BUKA GALERI
+  ==================================== */
+
+  galleryBtn.addEventListener(
+    "click",
+    function () {
+
+      if (photos.length >= MAX_PHOTO) {
+
+        alert(
+          "Maksimal 8 foto."
+        );
+
+        return;
+
+      }
+
+      galleryInput.click();
+
+    }
+  );
+
+
+  /* ====================================
+     PILIH FOTO GALERI
+  ==================================== */
+
+  galleryInput.addEventListener(
+    "change",
+    function (event) {
+
+      const files =
+        Array.from(
+          event.target.files
+        );
+
+
+      const sisa =
+        MAX_PHOTO - photos.length;
+
+
+      if (sisa <= 0) {
+
+        alert(
+          "Maksimal 8 foto."
+        );
+
+        return;
+
+      }
+
+
+      if (files.length > sisa) {
+
+        alert(
+          "Hanya " +
+          sisa +
+          " foto yang dapat ditambahkan."
+        );
+
+      }
+
+
+      files
+        .slice(0, sisa)
+        .forEach(function (file) {
+
+          if (
+            !file.type.startsWith(
+              "image/"
+            )
+          ) {
+
+            return;
+
+          }
+
+
+          const reader =
+            new FileReader();
+
+
+          reader.onload =
+            function (e) {
+
+              photos.push(
+                e.target.result
+              );
+
+              renderPhotos();
+
+            };
+
+
+          reader.readAsDataURL(file);
+
+        });
+
+
+      /* Reset input */
+
+      galleryInput.value = "";
+
+    }
+  );
+
+
+  /* ====================================
+     HAPUS SATU FOTO
+  ==================================== */
+
+  photoContainer.addEventListener(
+    "click",
+    function (event) {
+
+      const button =
+        event.target.closest(
+          ".delete-photo"
+        );
+
+
+      if (!button) return;
+
+
+      const index =
+        Number(
+          button.dataset.index
+        );
+
+
+      photos.splice(
+        index,
+        1
+      );
+
+
+      renderPhotos();
+
+    }
+  );
+
+
+  /* ====================================
+     HAPUS SEMUA FOTO
+  ==================================== */
+
+  deleteAllBtn.addEventListener(
+    "click",
+    function () {
+
+      if (photos.length === 0) {
+        return;
+      }
+
+
+      const yakin =
+        confirm(
+          "Hapus semua foto dokumentasi?"
+        );
+
+
+      if (yakin) {
+
+        photos = [];
+
+        renderPhotos();
+
+      }
+
+    }
+  );
+
+
+  /* ====================================
+     MATIKAN KAMERA
+  ==================================== */
+
+  window.addEventListener(
+    "beforeunload",
+    function () {
+
+      if (cameraStream) {
+
+        cameraStream
+          .getTracks()
+          .forEach(
+            track => track.stop()
+          );
+
+      }
+
+    }
+  );
+
+
+  /* ====================================
+     MULAI
+  ==================================== */
+
+  startCamera();
+
+  renderPhotos();
+
+});
+
+</script>
